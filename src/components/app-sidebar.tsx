@@ -1,17 +1,16 @@
 import * as React from "react";
 import {
-  BookOpen,
-  Bot,
-  Frame,
+  CalendarDays,
   GalleryVerticalEnd,
-  Map,
+  LayoutGrid,
   PieChart,
   Settings2,
-  SquareTerminal,
+  ShoppingCart,
+  Tickets,
+  UserRound,
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
-import { NavProjects } from "@/components/nav-projects";
 import { NavUser } from "@/components/nav-user";
 import { TeamSwitcher } from "@/components/team-switcher";
 import {
@@ -21,14 +20,9 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { useUser } from "@/hooks/use-user";
 
-// This is sample data.
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   teams: [
     {
       name: "Tiketix",
@@ -38,63 +32,92 @@ const data = {
   ],
   navMain: [
     {
-      title: "Playground",
+      title: "Overview",
       url: "#",
-      icon: SquareTerminal,
+      icon: LayoutGrid,
       isActive: true,
       items: [
         {
-          title: "History",
-          url: "#",
+          title: "Dashboard",
+          url: "/admin/dashboard",
         },
         {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
+          title: "Analytics",
           url: "#",
         },
       ],
     },
     {
-      title: "Models",
+      title: "Events",
       url: "#",
-      icon: Bot,
+      icon: CalendarDays,
       items: [
         {
-          title: "Genesis",
-          url: "#",
+          title: "Cities",
+          url: "/admin/cities",
         },
         {
-          title: "Explorer",
-          url: "#",
+          title: "All Events",
+          url: "/admin/events",
         },
         {
-          title: "Quantum",
+          title: "Create Event",
           url: "#",
         },
       ],
     },
     {
-      title: "Documentation",
+      title: "Orders",
       url: "#",
-      icon: BookOpen,
+      icon: ShoppingCart,
       items: [
         {
-          title: "Introduction",
+          title: "All Orders",
           url: "#",
         },
         {
-          title: "Get Started",
+          title: "Create Order",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "Customers",
+      url: "#",
+      icon: UserRound,
+      items: [
+        {
+          title: "All Customers",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "Tickets",
+      url: "#",
+      icon: Tickets,
+      items: [
+        {
+          title: "All Tickets",
           url: "#",
         },
         {
-          title: "Tutorials",
+          title: "Create Ticket",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "Reports",
+      url: "#",
+      icon: PieChart,
+      items: [
+        {
+          title: "Sales Report",
           url: "#",
         },
         {
-          title: "Changelog",
+          title: "Customer Report",
           url: "#",
         },
       ],
@@ -123,26 +146,10 @@ const data = {
       ],
     },
   ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
-    },
-  ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { dataUser, loading, error } = useUser();
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -150,10 +157,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        {loading ? (
+          <div className="text-sm px-4 py-2">Loading user...</div>
+        ) : error ? (
+          <div className="text-sm text-red-500 px-4 py-2">
+            Error loading user
+          </div>
+        ) : (
+          dataUser && <NavUser user={dataUser} />
+        )}
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

@@ -5,6 +5,7 @@ import {
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
+  BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -13,7 +14,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 
-export default function AdminDashboard() {
+export default function CityList() {
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -26,20 +27,21 @@ export default function AdminDashboard() {
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
                   <BreadcrumbLink href="/admin/dashboard">
-                    <BreadcrumbPage>Dashboard</BreadcrumbPage>
+                    Dashboard
                   </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Cities</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div className="aspect-video rounded-xl bg-gray-200" />
-            <div className="aspect-video rounded-xl bg-gray-200" />
-            <div className="aspect-video rounded-xl bg-gray-200" />
+        <div className="flex flex-1 flex-col items-center justify-center p-4 pt-0">
+          <div className="h-full bg-gray-100 rounded-xl flex items-center justify-center border">
+            <h2 className="text-3xl font-bold">City List</h2>
           </div>
-          <div className="h-full bg-gray-200 rounded-xl flex items-center justify-center" />
         </div>
       </SidebarInset>
     </SidebarProvider>
