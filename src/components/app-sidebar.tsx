@@ -67,6 +67,21 @@ const data = {
       ],
     },
     {
+      title: "Tickets",
+      url: "#",
+      icon: Tickets,
+      items: [
+        {
+          title: "All Tickets",
+          url: "#",
+        },
+        {
+          title: "Create Ticket",
+          url: "#",
+        },
+      ],
+    },
+    {
       title: "Orders",
       url: "#",
       icon: ShoppingCart,
@@ -88,21 +103,6 @@ const data = {
       items: [
         {
           title: "All Customers",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Tickets",
-      url: "#",
-      icon: Tickets,
-      items: [
-        {
-          title: "All Tickets",
-          url: "#",
-        },
-        {
-          title: "Create Ticket",
           url: "#",
         },
       ],
