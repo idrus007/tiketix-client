@@ -18,8 +18,10 @@ import {
 import { AxiosError } from "axios";
 import { Calendar, MapPin, Search } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function EventList() {
+  const navigate = useNavigate();
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -65,7 +67,6 @@ export default function EventList() {
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          {/* <div className="h-full bg-gray-100 rounded-xl flex items-center justify-center border" /> */}
           <div className="w-full flex items-center justify-between gap-4">
             <div className="flex items-center gap-2">
               <Button variant="default">All Events</Button>
@@ -82,7 +83,6 @@ export default function EventList() {
               />
             </div>
           </div>
-          {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[calc(100vh-134px)] overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 pr-2"> */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {loading ? (
               Array.from({ length: 9 }).map((_, index) => (
@@ -101,6 +101,16 @@ export default function EventList() {
             ) : error ? (
               <div className="col-span-full text-center text-red-500">
                 Terjadi kesalahan: {error}
+              </div>
+            ) : events.length === 0 ? (
+              <div className="col-span-full text-center text-gray-500">
+                Tidak ada event. Silakan tambahkan event baru.
+                <Button
+                  variant="link"
+                  onClick={() => navigate("/admin/events/create")}
+                >
+                  Tambah Event
+                </Button>
               </div>
             ) : (
               events.map((event) => (

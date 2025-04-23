@@ -32,6 +32,7 @@ interface FormEvent {
 
 export default function CreateEvent() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<FormEvent>({
     name: "",
     image: null, // Menginisialisasi image dengan null
@@ -74,6 +75,7 @@ export default function CreateEvent() {
     eventFormData.append("location", location);
 
     try {
+      setLoading(true);
       const { message } = await createEvent(eventFormData);
       toast.success(message);
       setFormData({
@@ -83,6 +85,7 @@ export default function CreateEvent() {
         date: new Date(),
         location: "",
       });
+      setLoading(false);
       navigate("/admin/events");
     } catch (error) {
       if (error instanceof Error) {
@@ -191,8 +194,13 @@ export default function CreateEvent() {
                 </div>
               </div>
               <div className="flex items-center justify-end">
-                <Button type="submit" variant="default">
-                  Save
+                <Button
+                  type="submit"
+                  variant="default"
+                  disabled={loading}
+                  className={loading ? "opacity-50 cursor-not-allowed" : ""}
+                >
+                  {loading ? "Saving..." : "Save"}
                 </Button>
               </div>
             </form>
