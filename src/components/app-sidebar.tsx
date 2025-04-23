@@ -53,16 +53,12 @@ const data = {
       icon: CalendarDays,
       items: [
         {
-          title: "Cities",
-          url: "/admin/cities",
-        },
-        {
           title: "All Events",
           url: "/admin/events",
         },
         {
           title: "Create Event",
-          url: "#",
+          url: "/admin/events/create",
         },
       ],
     },

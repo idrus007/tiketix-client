@@ -1,9 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
 import { CreditCard, Heart, Home, Search, UserRound } from "lucide-react";
 import { AvatarDropdown } from "../elements/avatar-dropdwon";
 
 export function UserLayout({ children }: { children: React.ReactNode }) {
+  const navigate = useNavigate();
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       {/* <Navbar /> */}
@@ -27,10 +28,18 @@ export function UserLayout({ children }: { children: React.ReactNode }) {
         </div>
 
         <div className="hidden sm:flex items-center gap-2">
-          <Button variant="outline" className="text-black">
+          <Button
+            onClick={() => navigate("/wishlists")}
+            variant="outline"
+            className="text-black cursor-pointer"
+          >
             <Heart />
           </Button>
-          <Button variant="outline" className="text-black">
+          <Button
+            onClick={() => navigate("/orders")}
+            variant="outline"
+            className="text-black cursor-pointer"
+          >
             <CreditCard />
           </Button>
           <AvatarDropdown />
@@ -63,13 +72,25 @@ export function UserLayout({ children }: { children: React.ReactNode }) {
       {/* Mobile nav */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t sm:hidden">
         <div className="flex items-center justify-around py-2">
-          <Button variant="ghost" className="text-black">
+          <Button
+            variant="ghost"
+            onClick={() => navigate("/dashboard")}
+            className="text-black cursor-pointer"
+          >
             <Home />
           </Button>
-          <Button variant="ghost" className="text-black">
+          <Button
+            variant="ghost"
+            onClick={() => navigate("/wishlists")}
+            className="text-black cursor-pointer"
+          >
             <Heart />
           </Button>
-          <Button variant="ghost" className="text-black">
+          <Button
+            variant="ghost"
+            onClick={() => navigate("/orders")}
+            className="text-black cursor-pointer"
+          >
             <CreditCard />
           </Button>
           <Button variant="ghost" className="text-black">

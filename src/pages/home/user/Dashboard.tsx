@@ -1,12 +1,14 @@
 import { Carousel } from "@/components/containers/carousel";
 import { UserLayout } from "@/components/layouts/user-layout";
 import { Calendar, MapPin } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const events = [
   {
     id: 1,
     image: "images/placeholder.svg",
     name: "Persembahan Cinta Fezt Vol.2",
+    slug: "persembahan-cinta-fezt-vol-2",
     date: "12 Agustus 2023",
     location: "Jakarta International Expo",
   },
@@ -14,6 +16,7 @@ const events = [
     id: 2,
     image: "images/placeholder.svg",
     name: "Jakarta Music Festival",
+    slug: "jakarta-music-festival",
     date: "19 Agustus 2023",
     location: "Senayan Park",
   },
@@ -21,6 +24,7 @@ const events = [
     id: 3,
     image: "images/placeholder.svg",
     name: "Indie Vibes Night",
+    slug: "indie-vibes-night",
     date: "25 Agustus 2023",
     location: "Rooftop Kemang",
   },
@@ -28,6 +32,7 @@ const events = [
     id: 4,
     image: "images/placeholder.svg",
     name: "Comedy Night Special",
+    slug: "comedy-night-special",
     date: "1 September 2023",
     location: "Balai Sarbini",
   },
@@ -35,6 +40,7 @@ const events = [
     id: 5,
     image: "images/placeholder.svg",
     name: "Festival Budaya Nusantara",
+    slug: "festival-budaya-nusantara",
     date: "10 September 2023",
     location: "Taman Mini Indonesia Indah",
   },
@@ -42,6 +48,7 @@ const events = [
     id: 6,
     image: "images/placeholder.svg",
     name: "Jazz Under The Stars",
+    slug: "jazz-under-the-stars",
     date: "16 September 2023",
     location: "Ancol Beach City",
   },
@@ -49,6 +56,7 @@ const events = [
     id: 7,
     image: "images/placeholder.svg",
     name: "Urban Food & Art Fair",
+    slug: "urban-food-art-fair",
     date: "23 September 2023",
     location: "Kota Kasablanka Mall",
   },
@@ -56,12 +64,14 @@ const events = [
     id: 8,
     image: "images/placeholder.svg",
     name: "Soundscape Live",
+    slug: "soundscape-live",
     date: "30 September 2023",
     location: "ICE BSD City",
   },
 ];
 
 export default function UserDashboard() {
+  const navigate = useNavigate();
   return (
     <UserLayout>
       <Carousel />
@@ -97,7 +107,10 @@ export default function UserDashboard() {
                 <button className="w-full bg-white text-gray-700 text-xs sm:text-base px-4 py-2 font-semibold">
                   Mulai dari Rp100.000
                 </button>
-                <button className="w-full bg-pink-500 text-white px-4 py-2 font-semibold">
+                <button
+                  onClick={() => navigate(`/events/${event.slug}`)}
+                  className="w-full bg-pink-500 text-white px-4 py-2 font-semibold cursor-pointer active:bg-pink-700 transition duration-300 ease-in-out"
+                >
                   Beli Tiket
                 </button>
               </div>

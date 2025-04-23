@@ -1,3 +1,4 @@
+import { Event, fetchEvents } from "@/api/event";
 import { AppSidebar } from "@/components/app-sidebar";
 import {
   Breadcrumb,
@@ -14,9 +15,32 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Search } from "lucide-react";
+import { AxiosError } from "axios";
+import { Calendar, MapPin, Search } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function EventList() {
+  const [events, setEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const getAllEvents = async () => {
+      try {
+        const response = await fetchEvents();
+        setEvents(response);
+        console.log("Events:", response);
+      } catch (err) {
+        const axiosError = err as AxiosError<{ message?: string }>;
+        setError(axiosError.response?.data?.message || axiosError.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getAllEvents();
+  }, []);
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -58,17 +82,59 @@ export default function EventList() {
               />
             </div>
           </div>
-          <div className="grid auto-rows-min gap-4 md:grid-cols-3 max-h-[calc(100vh-135px)] overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 pr-2">
-            <div className="aspect-video rounded-xl bg-gray-100 border" />
-            <div className="aspect-video rounded-xl bg-gray-100 border" />
-            <div className="aspect-video rounded-xl bg-gray-100 border" />
-            <div className="aspect-video rounded-xl bg-gray-100 border" />
-            <div className="aspect-video rounded-xl bg-gray-100 border" />
-            <div className="aspect-video rounded-xl bg-gray-100 border" />
-            <div className="aspect-video rounded-xl bg-gray-100 border" />
-            <div className="aspect-video rounded-xl bg-gray-100 border" />
-            <div className="aspect-video rounded-xl bg-gray-100 border" />
-            <div className="aspect-video rounded-xl bg-gray-100 border" />
+          {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[calc(100vh-134px)] overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 pr-2"> */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {loading ? (
+              Array.from({ length: 9 }).map((_, index) => (
+                <div
+                  key={index}
+                  className="bg-white border rounded-md overflow-hidden w-full animate-pulse"
+                >
+                  <div className="w-full h-44 bg-gray-200" />
+                  <div className="px-4 py-2 space-y-2">
+                    <div className="h-5 bg-gray-300 rounded w-2/3" />
+                    <div className="h-4 bg-gray-300 rounded w-1/2" />
+                    <div className="h-4 bg-gray-300 rounded w-1/3" />
+                  </div>
+                </div>
+              ))
+            ) : error ? (
+              <div className="col-span-full text-center text-red-500">
+                Terjadi kesalahan: {error}
+              </div>
+            ) : (
+              events.map((event) => (
+                <div
+                  key={event.id}
+                  className="bg-white border rounded-md overflow-hidden w-full"
+                >
+                  <img
+                    src={`http://localhost:5000/uploads/${event.image}`}
+                    alt={event.name}
+                    className="w-full h-44 object-cover"
+                  />
+                  <div className="px-4 py-2">
+                    <h2 className="text-lg font-semibold text-gray-900">
+                      {event.name}
+                    </h2>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="flex items-center text-gray-500 text-sm font-medium">
+                        <Calendar className="w-4 h-4 mr-1.5" />
+                        {new Date(event.date).toLocaleDateString("id-ID", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })}
+                      </span>
+                      <span className="flex items-center text-gray-500 text-sm font-medium">
+                        <MapPin className="w-4 h-4 mr-1.5" />
+                        {event.location}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </SidebarInset>
